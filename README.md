@@ -1,2 +1,2 @@
-# cpp-studying
+# cpp
 
