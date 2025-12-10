@@ -4,8 +4,10 @@
 using namespace std;
 
 int main(){
-    string s;
-    getline(cin,s);
-    cout<<s<<endl;
+    int s=10;
+    int &m=s;
+    int *p=&s;
+    cout<<m<<endl;
+    cout<<*p<<endl;
     return 0;
 }
