@@ -6,6 +6,7 @@ void bubblesort(vector<int>& arr){
     int size=arr.size();
     bool swapped=false;//为了防止外层循环重复循环（如果有一些数组是本来就排列好的，就没必要一直循环）。
     for(int i=0;i!=size-1;++i){//这是循环的遍数。
+        swapped=false;
         for(int j=0;j!=size-1-i;++j){//这是每一层的循环
             if(arr[j]>arr[j+1]){
                 swap(arr[j],arr[j+1]);//交换两个数的顺序。
