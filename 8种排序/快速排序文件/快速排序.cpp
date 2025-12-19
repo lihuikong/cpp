@@ -29,6 +29,14 @@ void quicksort(vector<int>& arr,int left,int right){
     quicksort(arr,left,end);
     quicksort(arr,begin,right);
 }
+void quicksort(vector<int>& arr)
+{
+    if(arr.empty())
+    {
+        return;
+    }
+    quicksort(arr,0,arr.size());
+}
 
 int main(){
     srand(time(NULL));//随机生成数。
