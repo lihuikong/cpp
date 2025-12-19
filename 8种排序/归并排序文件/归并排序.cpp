@@ -16,7 +16,7 @@ void mergesort(vector<int>& arr,int left,int right,vector<int> temp)
     int index = 0;
     while(i <= mid && j <= right)//将此刻两个数组里的元素一一比较，知道有一边的数组先全部放入temp中。
     {
-        if (arr[i] < arr[j])
+        if (arr[i] <= arr[j])
         {
             temp[index++] = arr[i++];
         }
