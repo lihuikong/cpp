@@ -1,23 +1,54 @@
 #include<iostream>
+#include<string>
+#include<stack>
 using namespace std;
-/*函数 search（nums,target){
-对于i从0到nums长度-1：
-   对于j从0到nums长度-1：
-      if(nums【i】+nums【j】==target){
-      cout<<"["<<i<<","<<j<<"]"<<endl;
-      }
-}
-*/
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target) {
-        int n=nums.size();
-        for(int i=0;i!=n-1;++i){
-            for(int j=0;j!=n-1;++j){
-                if(nums[i]+nums[j]==target){
-                    cout<<"["<<i<<","<<j<<"]"<<endl;
-                }
+
+bool isValid(string s)
+{
+    stack<char> stk;
+    for(auto ch:s)
+    {
+        if(ch == '(' || ch == '[' || ch == '{')
+        {
+            stk.push(ch);
+        }
+        else
+        {
+            if(stk.empty())
+            {
+                return false;
+            }
+            char top = stk.top();
+            if((ch == ')' && top == '(')
+            || (ch == ']' && top == '[')
+            || (ch == '}' && top == '{'))
+            {
+                stk.pop();
+            }
+            else
+            {
+                return false;
             }
         }
     }
-};
+    return stk.empty();
+}
+
+int main()
+{
+    string s;
+    char m;
+    while(cin >> m)
+    {
+        s.push_back(m);
+    }
+    if(isValid(s))
+    {
+        cout << "pass" << endl;
+    }
+    else
+    {
+        cout << "false" << endl;
+    }
+    return 0;
+}
