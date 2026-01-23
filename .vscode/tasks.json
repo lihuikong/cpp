@@ -3,15 +3,16 @@
   "tasks": [
     {
       "type": "cppbuild",
-      "label": "C/C++: clang++ build active file",
+      "label": "C/C++: clang++ build project",
       "command": "/usr/bin/clang++",
       "args": [
         "-fcolor-diagnostics",
         "-fansi-escape-codes",
         "-g",
-        "${fileDirname}/*.cpp",
+        "Person.cpp",
+        "main.cpp",
         "-o",
-        "${fileDirname}/${fileBasenameNoExtension}"
+        "program"
       ],
       "options": {
         "cwd": "${fileDirname}"
@@ -21,7 +22,7 @@
         "kind": "build",
         "isDefault": true
       },
-      "detail": "compiler: /usr/bin/clang++"
+      "detail": "Build entire project"
     }
   ]
 }

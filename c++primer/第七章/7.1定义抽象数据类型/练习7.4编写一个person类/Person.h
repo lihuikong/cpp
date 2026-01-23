@@ -10,6 +10,6 @@ class Person{
     public:
     Person(std::string n , std::string addr);
 
-    void printInfo();
+    void printInfo() const;
 };
 #endif
