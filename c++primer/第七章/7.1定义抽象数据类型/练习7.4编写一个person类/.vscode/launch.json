@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/Zhuanz/Desktop/编程/Github/变量和基本类型/cpp/c++primer/第七章/7.1定义抽象数据类型/练习7.4编写一个person类",
+      "program": "/Users/Zhuanz/Desktop/编程/Github/变量和基本类型/cpp/c++primer/第七章/7.1定义抽象数据类型/练习7.4编写一个person类/build/Debug/outDebug"
+    }
+  ]
+}
