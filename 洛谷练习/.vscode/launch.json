@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/Zhuanz/Desktop/编程/Github/变量和基本类型/cpp/洛谷练习/P2249查找",
+      "program": "/Users/Zhuanz/Desktop/编程/Github/变量和基本类型/cpp/洛谷练习/P2249查找/build/Debug/outDebug"
+    }
+  ]
+}
