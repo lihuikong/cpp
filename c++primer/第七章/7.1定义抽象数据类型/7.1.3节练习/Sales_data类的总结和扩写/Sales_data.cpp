@@ -7,8 +7,9 @@ Sales_data add(const Sales_data &, const Sales_data &);  // 求和生成
 std::ostream &print(std::ostream &, const Sales_data &); // 报表展示
 std::istream &read(std::istream &, Sales_data &);        // 录入数据
 
-struct Sales_data // 定义Sales_data函数
+class Sales_data // 定义Sales_data函数
 {
+public:          //添加公共访问说明符
     //------------------ 练习7.11 新增：四个构造函数 ----------------------
     // 1.默认构造函数
     Sales_data() = default;
@@ -19,12 +20,14 @@ struct Sales_data // 定义Sales_data函数
     // 4.接受输入流的构造函数：从键盘或文件直接创建对象
     Sales_data(std::istream &is)
     {
-        read(is, *this); // 复用已经写好的read函数
+        read(is); // 复用已经写好的read函数
     }
     //-----------------------------------------------------------------
-
     std::string isbn() const { return bookNo; } // 只读书籍编号
     Sales_data &combine(const Sales_data &);    // 把另一个账本加到这个账本上并返回，原账本不变（销量和收入）
+    std::istream &read(std::istream &is);
+    std::ostream &print(std::ostream &os);
+private:          //添加私有访问说明符
     double avg_price() const;                   // 计算均价
     std::string bookNo;                         // 书籍编号
     unsigned units_sold = 0;                    // 销售数量
@@ -47,18 +50,18 @@ Sales_data &Sales_data::combine(const Sales_data &rhs)
     return *this;
 }
 
-std::istream &read(std::istream &is, Sales_data &item)
+std::istream &Sales_data::read(std::istream &is)
 {
     double price = 0;
-    is >> item.bookNo >> item.units_sold >> price;
-    item.revenue = price * item.units_sold;
+    is >> bookNo >> units_sold >> price;
+    revenue = price * units_sold;
     return is;
 }
 
-std::ostream &print(std::ostream &os, const Sales_data &item)
+std::ostream &Sales_data::print(std::ostream &os)
 {
-    os << item.isbn() << " " << item.units_sold << " "
-       << item.revenue << " " << item.avg_price();
+    os << isbn() << " " << units_sold << " "
+       << revenue << " " << avg_price();
     return os;
 }
 
