@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/Zhuanz/Desktop/编程/Github/cpp/蓝桥杯练习/13届：B组/A：九进制转十进制",
+      "program": "/Users/Zhuanz/Desktop/编程/Github/cpp/蓝桥杯练习/13届：B组/A：九进制转十进制/build/Debug/outDebug"
+    }
+  ]
+}
