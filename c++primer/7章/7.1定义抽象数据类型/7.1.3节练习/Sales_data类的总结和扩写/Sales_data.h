@@ -26,11 +26,17 @@ public: // 添加公共访问说明符
     std::string isbn() const { return bookNo; } // 只读书籍编号
     Sales_data &combine(const Sales_data &);    // 把另一个账本加到这个账本上并返回，原账本不变（销量和收入）
 
-private:                      // 添加私有访问说明符
-    double avg_price() const; // 计算均价
-    std::string bookNo;       // 书籍编号
-    unsigned units_sold = 0;  // 销售数量
-    double revenue = 0.0;     // 总收入
+private:                     // 添加私有访问说明符
+    double avg_price() const // 计算均价
+    {
+        if (units_sold)
+            return revenue / units_sold;
+        else
+            return 0;
+    }
+    std::string bookNo;      // 书籍编号
+    unsigned units_sold = 0; // 销售数量
+    double revenue = 0.0;    // 总收入
 };
 
 // Sales_data的非成员接口函数

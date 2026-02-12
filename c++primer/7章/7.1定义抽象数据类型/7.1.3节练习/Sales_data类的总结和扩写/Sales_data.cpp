@@ -1,13 +1,5 @@
 #include "Sales_data.h"
 
-double Sales_data::avg_price() const
-{
-    if (units_sold)
-        return revenue / units_sold;
-    else
-        return 0;
-}
-
 // 返回Sales_data类型的成员
 Sales_data &Sales_data::combine(const Sales_data &rhs)
 {

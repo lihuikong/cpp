@@ -1,13 +1,6 @@
 #include "Screen.h"
 
-inline Screen &Screen::move(pos r, pos c)
+void Screen::some_mumber() const
 {
-    pos row = r * width;
-    cursor = row + c;
-    return *this;
-}
-char Screen::get(pos r, pos c) const
-{
-    pos row = r * width;
-    return contents[row + c];
+    ++access_ctr; // 保存一个计数值，用于记录成员函数被调用的次数
 }
