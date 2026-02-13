@@ -1,5 +1,6 @@
 #ifndef SCREEN_H
 #define SCREEN_H
+#include <iostream>
 #include <string>
 #include <vector>
 class Screen
@@ -22,6 +23,21 @@ public:
 
     void some_mumber() const;
 
+    Screen &display(std::ostream &os)
+    {
+        do_display(os);
+        return *this;
+    }
+
+    const Screen &display(std::ostream &os) const
+    {
+        do_display(os);
+        return *this;
+    }
+
+    Screen &set(char);
+    Screen &set(pos, pos, char);
+
     // 读取光标处的字符
     char get() const // 隐式内联
     {
@@ -33,11 +49,24 @@ private:
     pos cursor = 0;
     pos height = 0, width = 0;
     std::string contents;
-    mutable size_t access_ctr; /*
-                                mutable作用：即使在一个const对象内也能被修改。
-                                警告：如果不进行初始化，而是只是声明就会有潜在bug
-                               */
+    mutable size_t access_ctr = 0; //mutable作用：即使在一个const对象内也能被修改。
+    void do_display(std::ostream &os) const
+    {
+        os << contents;
+    }
 };
+
+inline Screen &Screen::set(char c)
+{
+    contents[cursor] = c; // 设置当前光标所在位置的新值
+    return *this;         // 将this对象作为左值返回
+}
+
+inline Screen &Screen::set(pos r, pos col, char ch)
+{
+    contents[r * width + col] = ch; // 设置给订位置的新值
+    return *this;                   // 将this对象作为左值返回
+}
 
 inline Screen &Screen::move(pos r, pos c)
 {
