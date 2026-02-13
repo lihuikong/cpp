@@ -11,7 +11,7 @@ private:
 protected:
     void copyFrom(T const *A, Rank lo, Rank hi);
     void expand();                         // 空间不足时扩容
-    void shrink();                         //
+    void shrink();                         // 装填因子过小时压缩
     bool bubble(Rank lo, Rank hi);         // 扫描交换
     void bubbleSort(Rank lo, Rank hi);     // 起泡排序算法
     void exchange(Rank i, Rank j);         // 元素交换
@@ -28,7 +28,7 @@ public:
     {
         _elem = new T[_capacity = c];
         _size = 0;
-    }                                                                           // 默认
+    } // 默认
     Vector(T *A, Rank lo, Rank hi) { copyFrom(A, lo, hi); }                     // 数组区间复制
     Vector(T *A, Rank n) { copyFrom(A, 0, n); }                                 // 数组整体复制
     Vector(Vector<T> const &V, Rank lo, Rank hi) { copyFrom(V._elem, lo, hi); } // 向量区间复制
@@ -67,11 +67,11 @@ public:
 // 实现expand类
 template <typename T>
 void Vector<T>::expand()
-{ // 向量空间不足时扩容
-    if (_size < _capacity)// 尚未满员时，无需扩容
-        return; 
-    if (_capacity < DEFAULT_CAPACITY)// 不低于最小容量
-        _capacity = DEFAULT_CAPACITY; 
+{                          // 向量空间不足时扩容
+    if (_size < _capacity) // 尚未满员时，无需扩容
+        return;
+    if (_capacity < DEFAULT_CAPACITY) // 不低于最小容量
+        _capacity = DEFAULT_CAPACITY;
     T *oldElem = _elem;
     _elem = new T[_capacity <<= 1]; // 容量加倍
     for (int i = 0; i < _size; i++)
@@ -79,4 +79,26 @@ void Vector<T>::expand()
         _elem[i] = oldElem[i]; // 复制原向量内容（T为基本类型，或已重载赋值操作符‘=’）
     }
     delete[] oldElem; // 释放原空间
+}
+
+template <typename T>
+void Vector<T>::shrink() // 装填因子过小时压缩向量所占空间
+{
+    if (_capacity < DEFAULT_CAPACITY << 1) // 不致收缩到DEFAULT_CAPACITY以下
+        return;
+    if (_size << 2 > _capacity) // 以25%为界
+        return;
+    T *oldElem = _elem;
+    _elem = new T[_capacity >>= 1]; // 容量减半
+    for (int i = 0; i < _size; i++) // 复制原向量内容
+    {
+        _elem[i] = oldElem[i];
+    }
+    delete[] oldElem; // 释放原空间
+}
+
+template <typename T> // 重载下标操作符
+T &Vector<T>::operator[](Rank r) const
+{
+    return _elem[r]; // assert：0 <= r < _size
 }
