@@ -1,5 +1,7 @@
 typedef int Rank;          // 秩
 #define DEFAULT_CAPACITY 3 // 默认的初始容量（实际应用中可设置为更大）
+#include <cstdlib>
+#include <algorithm>
 
 template <typename T>
 class Vector
@@ -40,6 +42,7 @@ public:
     bool empty() const { return _size <= 0; }                       // 判空
     int disordered() const;                                         // 判断向量是否已经排序
     Rank find(T const &e) const { return find(e, 0, (Rank)_size); } // 无序向量整体查找
+    Rank find(T const &e, Rank lo, Rank hi) const;                  // 无序向量区间查找
     Rank search(T const &e) const                                   // 有序向量整体查找
     {
         return (0 >= _size) ? -1 : search(e, (Rank)0, (Rank)_size);
@@ -101,4 +104,46 @@ template <typename T> // 重载下标操作符
 T &Vector<T>::operator[](Rank r) const
 {
     return _elem[r]; // assert：0 <= r < _size
+}
+
+template <typename T>
+void Vector<T>::unsort(Rank lo, Rank hi) // 等概率随机置乱向量区间[lo,hi)
+{
+    T *V = _elem + lo;                // 让指针V指向第lo个元素，_elem是原数组的首地址。将子向量_elem[lo,hi)视作另一向量V[0,hi-lo)
+    for (int i = hi - lo; i > 0; i--) // 自后向前
+    {
+        std::swap(V[i - 1], V[rand() % i]); // 将V[i-1]与V[0,i-1]中某一元素随机交换
+    }
+}
+
+template <typename T>
+static bool lt(T *a, T *b)
+{
+    return lt(*a, *b); // less than（比较所指的对象而非地址）
+}
+
+template <typename T>
+static bool lt(T &a, T &b)
+{
+    return a < b; // less than（直接比较数值）
+}
+
+template <typename T>
+static bool eq(T *a, T *b)
+{
+    return eq(*a, *b); // equal（比较所指的对象）
+}
+
+template <typename T>
+static bool eq(T &a, T &b)
+{
+    return a == b; // equal（直接比较数值）
+}
+
+template <typename T> // 无需向量的顺序查找：返回最后一个元素e的位置；失败时，返回lo - 1
+Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const
+{
+    while ((lo < hi--) && (_elem[hi] != e))
+        ;      // 从后向前，顺序查找
+    return hi; // 若hi < lo，则意味着失败；否则hi即命中元素的秩
 }
