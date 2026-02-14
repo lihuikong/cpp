@@ -23,20 +23,20 @@ public:
 
     void some_mumber() const;
 
-    Screen display(std::ostream &os)
+    Screen& display(std::ostream &os)
     {
         do_display(os);
         return *this;
     }
 
-    const Screen display(std::ostream &os) const
+    const Screen& display(std::ostream &os) const
     {
         do_display(os);
         return *this;
     }
 
-    Screen set(char);
-    Screen set(pos, pos, char);
+    Screen& set(char);
+    Screen& set(pos, pos, char);
 
     // 读取光标处的字符
     char get() const // 隐式内联
@@ -44,7 +44,7 @@ public:
         return contents[cursor];
     }
     inline char get(pos ht, pos wd) const; // 显式内联
-    Screen move(pos r, pos c);            // 返回Screen&类型的返回值
+    Screen& move(pos r, pos c);            // 返回Screen&类型的返回值
 private:
     pos cursor = 0;
     pos height = 0, width = 0;
@@ -56,19 +56,19 @@ private:
     }
 };
 
-inline Screen Screen::set(char c)
+inline Screen& Screen::set(char c)
 {
     contents[cursor] = c; // 设置当前光标所在位置的新值
     return *this;         // 将this对象作为左值返回
 }
 
-inline Screen Screen::set(pos r, pos col, char ch)
+inline Screen& Screen::set(pos r, pos col, char ch)
 {
     contents[r * width + col] = ch; // 设置给订位置的新值
     return *this;                   // 将this对象作为左值返回
 }
 
-inline Screen Screen::move(pos r, pos c)
+inline Screen& Screen::move(pos r, pos c)
 {
     pos row = r * width; // 计算行的位置
     cursor = row + c;    // 在行内将光标移到指定的列
