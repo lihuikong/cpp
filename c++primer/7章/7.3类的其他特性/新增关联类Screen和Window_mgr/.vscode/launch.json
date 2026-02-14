@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "lldb",
+      "request": "launch",
+      "args": [],
+      "cwd": "/Users/Zhuanz/Desktop/编程/Github/cpp/c++primer/7章/7.3类的其他特性/新增关联类Screen和Window_mgr/src",
+      "program": "/Users/Zhuanz/Desktop/编程/Github/cpp/c++primer/7章/7.3类的其他特性/新增关联类Screen和Window_mgr/src/build/Debug/outDebug"
+    }
+  ]
+}
