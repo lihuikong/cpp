@@ -147,3 +147,72 @@ Rank Vector<T>::find(T const &e, Rank lo, Rank hi) const
         ;      // 从后向前，顺序查找
     return hi; // 若hi < lo，则意味着失败；否则hi即命中元素的秩
 }
+
+template <typename T> // 将e作为秩为r的元素插入
+Rank Vector<T>::insert(Rank r, T const &e)
+{
+    expand(); // 如有必要，扩容
+    for (int i = _size; i > r; i--)
+    {
+        _elem[i] = _elem[i - 1]; // 自后向前，后继元素顺次后移一个单元
+    }
+    _elem[r] = e; // 将新元素插入
+    _size++;      // 更新容量
+    return r;     // 返回秩
+}
+
+template <typename T>
+int Vector<T>::remove(Rank lo, Rank hi) // 删除秩在区间[lo,hi)之内的元素
+{
+    if (lo == hi) // 出于效率考虑，单独处理单元素删除
+        return 0;
+    T e = _elem[lo]; // 备份被删除元素
+    while (hi < _size)
+    {
+        _elem[lo++] = _elem[hi++]; // 后续元素顺次前移一个单元
+    }
+    _size = lo;     // 更新规模,直接丢弃尾部[lo,_size = hi)区间
+    shrink();       // 如有必要，压缩
+    return hi - lo; // 返回被删除元素
+}
+
+template <typename T>
+T Vector<T>::remove(Rank r) // 删除秩为r的元素,0 <= r < _size
+{
+    T e = _elem[r];   // 备份被删除元素
+    remove(r, r + 1); // 调用区间删除算法，等效于对区间[r,r+1)删除
+    return e;         // 返回被删除元素
+}
+
+template <typename T>
+int Vector<T>::deduplicate()
+{
+    int oldSize = _size; // 记录原规模
+    Rank i = 1;          // 从第二个元素,即_elem[1]开始
+    while (i < _size)    // 自前向后注意考察各元素_elem[i]
+    {
+        (find(_elem[i], 0, i) < 0) ? i++ : remove(i); // 在前缀中寻找_elem[i]，如无重复则继续扫描，否则删除当前元素
+    }
+    return oldSize - _size; // 返回删除元素的数量
+}
+
+// 写一个遍历接口是为了能够把“遍历权”交给 Vector，把“操作权”交给用户。
+// 自己当然可以写for循环，但是这样会破坏封装性。
+template <typename T>
+void Vector<T>::traverse(void (*visit)(T &)) // 使用函数指针的遍历
+{
+    for (int i = 0; i < _size; i++)
+    {
+        visit(_elem[i]);
+    }
+}
+
+template <typename T>
+template <typename VST>              // 元素类型、操作器
+void Vector<T>::traverse(VST &visit) // 利用函数对象机制的遍历
+{
+    for (int i = 0; i < _size; i++)
+    {
+        visit(_elem[i]);
+    }
+}
