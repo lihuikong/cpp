@@ -60,7 +60,7 @@ public:
     void unsort(Rank lo, Rank hi);                       // 对[lo,hi)治乱
     void unsort() { unsort(0, _size); }                  // 整体置乱
     int deduplicate();                                   // 无序去重
-    int uniquify;                                        // 有序去重
+    int uniquify();                                      // 有序去重
     // 遍历
     void traverse(void (*)(T &)); // 遍历(使用函数指针，只读或局部性修改)
     template <typename VST>
@@ -215,4 +215,46 @@ void Vector<T>::traverse(VST &visit) // 利用函数对象机制的遍历
     {
         visit(_elem[i]);
     }
+}
+
+template <typename T>
+struct Increase // 函数对象：递增一个T类对象
+{
+    virtual void operator()(T &e) { e++; } // 假设T可直接递增或已重载++
+};
+
+template <typename T>
+void increase(Vector<T> &V) // 统一递增向量中的各元素
+{
+    V.traverse(Increase<T>()); // 以Increase<T>()为基本操作进行遍历
+};
+
+template <typename T>
+int Vector<T>::disordered() const
+{                                   // 返回向量中逆序元素对的总数
+    int n = 0;                      // 计数器
+    for (int i = 1; i < _size; i++) // 逐一检查_size - 1对相邻元素
+    {
+        if (_elem[i - 1] > _elem[i])
+        {
+            n++; // 逆序元素对出现，计数器增1
+        }
+    }
+    return n; // 向量有序当且仅当n = 0
+}
+
+template <typename T>
+int Vector<T>::uniquify()
+{                       // 有序向量重复元素剔除算法（高效版）
+    Rank i = 0, j = 0;  // 各对互异“相邻”元素的秩
+    while (++j < _size) // 逐一扫描，直至末元素
+    {
+        if (_elem[i] != _elem[j]) // 跳过重复元素
+        {
+            _elem[++i] = _elem[j]; // 发现新元素，向前移置1个位置
+        }
+    }
+    _size = ++i;  // 更新规模，截除尾部多余元素
+    shrink();     // 如有必要，压缩空间
+    return j - i; // 返回删除的元素个数
 }
