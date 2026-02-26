@@ -258,3 +258,22 @@ int Vector<T>::uniquify()
     shrink();     // 如有必要，压缩空间
     return j - i; // 返回删除的元素个数
 }
+
+template <typename T> // 在有序向量的区间[lo,hi)内，确定不大于e的最后一个节点的秩
+Rank Vector<T>::search(T const &e, Rank lo, Rank hi) const
+{                         // assert: 0 <= lo < hi <= _size
+    return (rand() % 2) ? // 按各50%的概率随机选用以下两种算法之一
+               binSearch(_elem, e, lo, hi)
+                        : fibsearch(_elem, e, lo, hi); // 二分查找或者Fibonacci查找
+}
+
+// 二分查找算法（版本A）：在有序向量的区间[lo,hi)内查找元素e，0 <= lo < hi <= _size
+template <typename T> static Rank binSearch(T* A, T const& e, Rank lo, Rank hi){
+    while(lo < hi){
+        Rank mi = (lo + hi) >> 1; // 以均分为轴点
+        if(e < A[mi]) hi = mi; // 前半段继续查找
+        else if(A[mi] < e) lo = mi + 1; // 后半段继续查找
+        else return mi; // 在mi处命中
+    } // 成功查找可以提前终止
+    return -1; // 查找失败
+} // 有多个命中元素时，不能保证返回秩最大者；查找失败时，简单返回-1，而不能指示失败的位置
